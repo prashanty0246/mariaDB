@@ -1,1 +1,7 @@
 
+ const data = await AppDataSource
+    .getRepository(BankInfo)
+    .createQueryBuilder("bank_info")
+    .select("SUM(rate_limit)", "total")
+    .where("member_id = :member_id", { member_id: 123456})
+    .getRawOne()
