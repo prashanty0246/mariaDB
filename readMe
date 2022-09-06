@@ -14,3 +14,20 @@
         .where("status = :status", { status: 'OK', doc_type: 'DRAFT'})
         .getRawOne()
 
+  TokenRequestData = await TokenRequestByStatusRepository.find(
+                {
+                   where: {
+                    doc_type: In( [ 'DRAFT','PENDING']),
+                    status: 'OK'
+                   },
+                //    skip: 1000 * 1,
+                //    take: 1000
+                }
+            )
+
+            count = await AppDataSource
+            .getRepository(TokenRequestByStatus)
+            .createQueryBuilder("token_request_by_status")
+            .select("count(*)", 'count')
+            .where("status = :status", { status: 'OK', doc_type: ['PENDING', 'DRAFT']})
+            .getRawOne()
