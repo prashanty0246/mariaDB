@@ -79,3 +79,18 @@ getTokensList({
       txnIdQuery = txnIdQuery + "AND" + filterQuery;
     }
   }
+
+
+
+  if (queryParams.filterBy != "") {
+    filterQuery = "" + queryParams.filterBy;
+
+    let qs = ELEMENT_TYPE_MAP[queryParams.filterBy] == "string" ? "'" : "";
+    if (queryParams.filterType == "value") {
+      filterQuery = filterQuery + " = " + qs + queryParams.filterValue + qs;
+    } else if (queryParams.filterType == "range") {
+      filterQuery = filterQuery + " >= " + qs + queryParams.filterStart + qs;
+      filterQuery = filterQuery + " AND " + queryParams.filterBy;
+      filterQuery = filterQuery + " <= " + qs + queryParams.filterEnd + qs;
+    }
+  }
