@@ -71,3 +71,11 @@ getTokensList({
   filterEnd: "2022-02-21",
   filterValue: '30'
 })
+
+  if (queryParams.request_id != "") {
+    txnIdQuery = "" + "request_id = '" + queryParams.request_id + "'";
+    Logger.debug("Query -1: " + txnIdQuery);
+    if (queryParams.filterBy != "") {
+      txnIdQuery = txnIdQuery + "AND" + filterQuery;
+    }
+  }
