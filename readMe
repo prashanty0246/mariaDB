@@ -31,3 +31,43 @@
             .select("count(*)", 'count')
             .where("status = :status", { status: 'OK', doc_type: ['PENDING', 'DRAFT']})
             .getRawOne()
+const {Between} = require('typeorm')
+
+const ELEMENT_TYPE_MAP = {
+  value: "decimal",
+  serial_no: "string",
+  status: "string",
+  creation_timestamp: "string",
+ };
+
+ const getTokensList = async (
+  queryParams
+) => {
+  // form the where clause
+  let filterQuery = "";
+  let txnIdQuery = "";
+  let result;
+  const condition = {}
+
+  if (queryParams.filterBy != "") {
+    filterQuery = "" + queryParams.filterBy;
+
+    let qs = ELEMENT_TYPE_MAP[queryParams.filterBy] === "string" ? "'" : "";
+    if (queryParams.filterType === "value") {
+      Object.assign(condition , {where: {[queryParams.filterType]: queryParams.filterValue}})
+    } else if (queryParams.filterType === "range") {
+      Object.assign(condition , {where: {[queryParams.filterType]: Between(queryParams.filterStart, queryParams.filterEnd)}})
+
+    }
+  }
+
+  console.log(condition)
+}
+
+getTokensList({
+  filterType: 'range',
+  filterStart: '2022-02-21',
+  filterBy: 'creation_timestamp',
+  filterEnd: "2022-02-21",
+  filterValue: '30'
+})
