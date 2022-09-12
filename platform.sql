@@ -33,12 +33,12 @@ create table pso_info (
   PRIMARY KEY (org_id)
 );
 
-INSERT INTO USER (id, username,email,password,reset_password,department,status) VALUES (1,'PLADMIN','admin@platform.com','$2b$10$9TwwKC59EwNHU3XIN.ytruagUL90M6IJWxwAM4zm3g9yJP6L.ajO.',false, 'platform','ACTIVE');
+INSERT INTO user (id, username,email,password,reset_password,department,status) VALUES (1,'PLADMIN','admin@platform.com','$2b$10$9TwwKC59EwNHU3XIN.ytruagUL90M6IJWxwAM4zm3g9yJP6L.ajO.',false, 'platform','ACTIVE');
 
-INSERT INTO PERMISSION (id,name,status,created_at,updated_at) VALUES (1,'CREATE_USER','ACTIVE',1628770353688,1628770353688);
+INSERT INTO permission (id,name,status,created_at,updated_at) VALUES (1,'CREATE_USER','ACTIVE','2021-08-12 17:42:33','2021-08-12 17:42:33');
 
-INSERT INTO ROLE (id, role_name, status,created_at,updated_at) VALUES (1,'Administrator','ACTIVE', 1628770353688,1628770353688);
+INSERT INTO role (id, role_name, status,created_at,updated_at) VALUES (1,'Administrator','ACTIVE', '2021-08-12 17:42:33','2021-08-12 17:42:33');
 
-INSERT INTO ROLE_PERMISSION (role_id,permission_id,created_at,updated_at) VALUES (1,1,1628770353688,1628770353688);
+INSERT INTO role_permission (role_id,permission_id,created_at,updated_at) VALUES (1,1,'2021-08-12 17:42:33','2021-08-12 17:42:33');
 
-INSERT INTO USER_ROLE(user_id,role_id,created_at,updated_at) VALUES(1,1,1628770353688,1628770353688);
+INSERT INTO user_role(user_id,role_id,created_at,updated_at) VALUES(1,1,'2021-08-12 17:42:33','2021-08-12 17:42:33');
