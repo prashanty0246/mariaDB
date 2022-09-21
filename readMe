@@ -1,7 +1,24 @@
-docker run --detach \
---name portainer \
---publish 9443:9443 \
---volume /var/run/docker.sock:/var/run/docker.sock \
---volume portainer_data:/data \
---restart=always \
-portainer/portainer-ce:2.9.0-alpine
+export const AppDataSource = new DataSource({
+      type: "mariadb",
+      host: "localhost",
+      port: 3308,
+      username: "root",
+      password: "Password123!",
+      database: "cbdc",
+      synchronize: true,
+      logging: true,
+      name: "default",
+      connectTimeout: 20000,
+      acquireTimeout: 20000,
+      entities: [
+        __dirname + '/entity/*.{js,ts}'
+      ],
+      migrations: [],
+      subscribers: [],
+      extra: {
+        min: 5,
+        max: 10,
+        connectionLimit: 50,
+        connectionTimeoutMillis: 1000,
+      }
+});
