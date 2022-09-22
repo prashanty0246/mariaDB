@@ -7,3 +7,4 @@ ADD my.cnf /etc/mysql/my.cnf
 #ADD /bank.sql /docker-entrypoint-initdb.d
 
 EXPOSE 3306
+-rw-rw-r-- 1 prashantyeshi prashantyeshi  1601 Sep 21 18:53 my.cnf
