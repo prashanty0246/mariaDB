@@ -1,3 +1,10 @@
-networks:      
-  backend:
-    driver: bridge
+version: "3.4"
+services:
+  ata-mysql:
+    restart: unless-stopped
+    image: mysql:5.7.22
+    command:
+      - "mysqld"
+      - "--innodb_buffer_pool_size=400M"
+      - "--ft-min_word-len=1"
+      - "--ft-stopword-file=''"
