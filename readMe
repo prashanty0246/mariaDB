@@ -1,10 +1,13 @@
-version: "3.4"
-services:
-  ata-mysql:
-    restart: unless-stopped
-    image: mysql:5.7.22
-    command:
-      - "mysqld"
-      - "--innodb_buffer_pool_size=400M"
-      - "--ft-min_word-len=1"
-      - "--ft-stopword-file=''"
+export const keepConnectionAlive = async () => {
+  try {
+    const isInitialized = AppDataSource.isInitialized;
+
+    if (!isInitialized) {
+      await AppDataSource.initialize();
+    }
+
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
