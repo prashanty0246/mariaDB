@@ -1,24 +1,50 @@
- const INSERT_ISSUANCE_REQ =
-      "INSERT INTO token_request (id,status,sender_organization,receiver_organization,sender_address,receiver_address,tokens_requested,total_amount,maker_name, maker_remarks,checker_name, checker_remarks,checked_at, doc_type,created_at,updated_at,txn_ref_no, sub_type, req_msg_id, recall_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    const result = await tokenRequestRepository.query(INSERT_ISSUANCE_REQ, [
-      request.id,
-      requestDbRecord.status,
-      requestDbRecord.sender_organization,
-      requestDbRecord.receiver_organization,
-      requestDbRecord.sender_address,
-      requestDbRecord.receiver_address,
-      requestDbRecord.tokens_requested,
-      JSON.parse(requestDbRecord.total_amount),
-      requestDbRecord.maker_name,
-      requestDbRecord.maker_remarks,
-      requestDbRecord.checker_name,
-      requestDbRecord.checker_remarks,
-      requestDbRecord.checked_at,
-      requestDbRecord.doc_type,
-      requestDbRecord.created_at,
-      requestDbRecord.updated_at,
-      requestDbRecord.txn_ref_no,
-      requestDbRecord.sub_type,
-      requestDbRecord.req_msg_id,
-      requestDbRecord.recall_id,
-    ]);
+# The MariaDB configuration file
+#
+# The MariaDB/MySQL tools read configuration files in the following order:
+# 0. "/etc/mysql/my.cnf" symlinks to this file, reason why all the rest is read.
+# 1. "/etc/mysql/mariadb.cnf" (this file) to set global defaults,
+# 2. "/etc/mysql/conf.d/*.cnf" to set global options.
+# 3. "/etc/mysql/mariadb.conf.d/*.cnf" to set MariaDB-only options.
+# 4. "~/.my.cnf" to set user-specific options.
+#
+# If the same option is defined multiple times, the last one will apply.
+#
+# One can use all long options that the program supports.
+# Run program with --help to get a list of available options and with
+# --print-defaults to see which it would actually understand and use.
+#
+# If you are new to MariaDB, check out https://mariadb.com/kb/en/basic-mariadb-articles/
+
+#
+# This group is read both by the client and the server
+# use it for options that affect everything
+#
+[mysqld]
+skip-host-cache
+skip-name-resolve
+max_connections=500
+max_allowed_packet=256M
+innodb_log_buffer_size=128M
+innodb_file_per_table=1
+#innodb_log_file_size=2GB
+query-cache-size = 8M
+query-cache-type = 1
+query_cache_limit = 8M
+join-buffer-size = 8M
+#table-cache = 1024
+table-definition-cache = 1024
+open-files-limit = 4096
+bind-address=*
+transaction-isolation=READ-COMMITTED
+connect_timeout = 600
+net_read_timeout = 600
+net_write_timeout = 600
+log_warnings=2
+
+[client-server]
+# Port or socket location where to connect
+# port = 3306
+socket = /run/mysqld/mysqld.sock
+
+
+!includedir /etc/mysql/mariadb.conf.d/
