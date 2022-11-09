@@ -1,1 +1,125 @@
-https://medium.com/hackernoon/getting-started-with-aws-lambda-and-node-js-4ce3259c6dfd
+import { Entity, Column,  PrimaryColumn} from "typeorm"
+
+@Entity({name:"transaction_token_mapping", synchronize: false})
+export class TransactionTokenMapping {
+    @PrimaryColumn({type:"text"})
+    txn_id: string
+
+    @Column({type:"text"})
+    request_type: string
+
+    @Column({type:"text"})
+    request_id: string
+
+    @Column({type:"text"})
+    debit_ref: string
+
+    @PrimaryColumn({type:"text"})
+    serial_no: string
+
+    @Column({type:"text"})
+    token_details: string
+}
+
+
+
+
+
+
+
+export const getRecursiveCall = async (
+  Where: Object,
+  Write: Object,
+  Repository: any,
+  cb: Function,
+  counter: number,
+  qyeryType: string = "INSERT"
+): Promise<any> => {
+  try {
+    Logger.info(`DB Retry Started--::`, counter);
+    if (counter >= 5) {
+      Logger.info(`DB Retry Finished--::`, counter);
+      return cb({ error: true, data: null });
+    }
+
+    setTimeout(async () => {
+      try {
+        if (qyeryType === "INSERT") {
+          const res = await Repository.save(Write);
+          if (res) {
+            return cb({ error: false, data: res });
+          }
+        }
+        if (qyeryType === "UPDATE") {
+          const res = await Repository.update(Where, Write);
+          if (res) {
+            return cb({ error: false, data: res });
+          }
+        }
+
+        if (qyeryType === "SELECT") {
+          const res = Object.keys(Where).length
+            ? await Repository.find(Where)
+            : await Repository.find();
+
+          if (res) {
+            return cb({ error: false, data: JSON.parse(JSON.stringify(res)) });
+          }
+        }
+
+        if (qyeryType === "COUNT") {
+          const res = Object.keys(Where).length
+            ? await Repository.count(Where)
+            : await Repository.count();
+
+          if (res) {
+            return cb({ error: false, data: JSON.parse(res) });
+          }
+        }
+
+        if (qyeryType === "SELECT_ONE") {
+          const res = await Repository.findOne(Where);
+
+          if (res) {
+            return cb({ error: false, data: JSON.parse(res) });
+          }
+        }
+
+        if (qyeryType === "DELETE") {
+          const res = Object.keys(Where).length
+            ? await Repository.delete(Where)
+            : await Repository.delete();
+
+          if (res) {
+            return cb({ error: false, data: res });
+          }
+        }
+
+        getRecursiveCall(Where, Write, Repository, cb, counter + 1, qyeryType);
+      } catch (error) {
+        await keepConnectionAlive();
+        getRecursiveCall(Where, Write, Repository, cb, counter + 1, qyeryType);
+      }
+    }, 2000);
+  } catch (error) {
+    await keepConnectionAlive();
+    console.log(`getRecursiveCall Failed ::----::`, error.message);
+    getRecursiveCall(Where, Write, Repository, cb, counter + 1, qyeryType);
+  }
+};
+
+     batchArray.push({
+        txn_id: transactionId,
+        request_type: requestType,
+        request_id: requestId,
+        debit_ref: debitRef,
+        serial_no: token.serialNo,
+        token_details: JSON.stringify(token),
+      });
+
+
+  await AppDataSource.createQueryBuilder()
+          .insert()
+          .into(TransactionTokenMapping)
+          .values(batchArray)
+          .execute();
